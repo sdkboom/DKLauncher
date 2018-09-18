@@ -8,7 +8,9 @@ import android.content.pm.ResolveInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.animation.LinearInterpolator;
 
 import com.example.dklanucher.adapter.AppsRecyclerAdapter;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private void initAdapter() {
         AppsRecyclerAdapter adapter = new AppsRecyclerAdapter(mAppsData , mContext);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext,4,GridLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
