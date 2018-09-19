@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.example.dklanucher.AppItem;
 import com.example.dklanucher.R;
+import com.example.dklanucher.helper.RecyclerCallback;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,14 +22,20 @@ import java.util.List;
 
 public class AppsRecyclerAdapter extends RecyclerView.Adapter<AppsRecyclerAdapter.AppHolder> {
 
-    private List<AppItem> mDataList ;
+    private static List<AppItem> mDataList ;
     private Context mContext ;
+    private RecyclerAdapterListener mListener ;
 
-    public AppsRecyclerAdapter(List<AppItem> dataList , Context context){
+    public AppsRecyclerAdapter(List<AppItem> dataList , Context context ){
 
         mDataList = dataList ;
         mContext = context ;
+        mListener = new RecyclerAdapterListener();
 
+    }
+
+    public RecyclerAdapterListener getListener(){
+        return mListener ;
     }
 
     @Override
@@ -35,7 +43,7 @@ public class AppsRecyclerAdapter extends RecyclerView.Adapter<AppsRecyclerAdapte
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.app_item,parent,false);
         final AppHolder holder = new AppHolder(view);
-        holder.app.setOnClickListener(new View.OnClickListener() {
+        holder.appItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
@@ -63,15 +71,43 @@ public class AppsRecyclerAdapter extends RecyclerView.Adapter<AppsRecyclerAdapte
 
         private ImageView appIcon ;
         private TextView appName ;
-        private View app ;
+        public View appItem;
 
         public AppHolder(View itemView) {
             super(itemView);
 
-            app = itemView ;
+            appItem = itemView ;
             appIcon = itemView.findViewById(R.id.app_icon);
             appName = itemView.findViewById(R.id.app_name);
 
         }
     }
+
+    public class RecyclerAdapterListener implements RecyclerCallback.RecyclerTouchListener{
+
+        @Override
+        public boolean onMove(int fromPosition, int toPosition) {
+            if(fromPosition > toPosition){
+                for(int i = fromPosition ; i > toPosition ; i --){
+                    Collections.swap(mDataList,i,i-1);
+                }
+            }else {
+                for(int i = fromPosition ; i < toPosition ; i ++){
+                    Collections.swap(mDataList,i,i+1);
+                }
+            }
+            notifyItemMoved(fromPosition,toPosition);
+            return true;
+        }
+
+        @Override
+        public void onSwiped(int position) {
+            mDataList.remove(position);
+        }
+    }
+
+    public static List<AppItem> getDataList(){
+        return mDataList ;
+    }
+
 }
