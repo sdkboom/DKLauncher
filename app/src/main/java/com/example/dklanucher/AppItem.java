@@ -13,6 +13,15 @@ public class AppItem {
     private Drawable appIcon ;
     private Intent intent ;
     private String pkgName ;
+    private int Id ;
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
 
     public String getAppName() {
         return appName;
@@ -45,4 +54,5 @@ public class AppItem {
     public void setPkgName(String pkgName) {
         this.pkgName = pkgName;
     }
+
 }
